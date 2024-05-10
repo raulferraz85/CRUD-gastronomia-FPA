@@ -1,6 +1,6 @@
-# CRUD Culinário 🍲
+# BiteMe 🍲
 
-<img style="margin-top: 35px;" src="https://www.cesar.school/wp-content/uploads/2019/09/marca_cesar_school.png" alt="Logo Cesar" width=150 height=150 align="right">
+<img src="https://www.cesar.school/wp-content/uploads/2019/09/marca_cesar_school.png" alt="Logo Cesar" width=150 height=150 align="right">
 
 ## Sobre o Projeto
 
