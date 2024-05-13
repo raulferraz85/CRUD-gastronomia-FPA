@@ -1,27 +1,37 @@
+receita = {}
+
 def menu():
     print(f"""
-  ____  _ _       __  __             
- |  _ \(_) |     |  \/  |            
- | |_) |_| |_ ___| \  / | __ _ _ __  
- |  _ <| | __/ _ \ |\/| |/ _` | '_ \ 
- | |_) | | ||  __/ |  | | (_| | |_) |
- |____/|_|\__\___|_|  |_|\__,_| .__/ 
-                              | |    
-                              |_|   
-          
-    [1] - Cadastrar Receita
-    [2] - Visualizar Receita
-    [3] - Atualizar Receita
-    [4] - Apagar Receita
-    [5] - Procurar Receita por País
-    [6] - Ver Receitas Favoritas
-    [7] - Avaliar Receita      
-    [8] - Ver Receita Aleatória  
-    [0] - Sair do Progama                      
+ \t\t ____  _ _       __  __              
+ \t\t|  _ \(_) |     |  \/  |             
+ \t\t| |_) |_| |_ ___| \  / | __ _ _ __   
+ \t\t|  _ <| | __/ _ \ |\/| |/ _` | '_ \  
+ \t\t| |_) | | ||  __/ |  | | (_| | |_) | 
+ \t\t|____/|_|\__\___|_|  |_|\__,_| .__/  
+ \t\t                              | |     
+ \t\t                              |_|     
+
+\t[1] - Cadastrar Receita\t\t[2] - Visualizar Receita
+\t[3] - Atualizar Receita\t\t[4] - Apagar Receita
+\t[5] - Procurar Receita por País\t[6] - Ver Receitas Favoritas
+\t[7] - Avaliar Receita\t\t[8] - Ver Receita Aleatória
+\t\t\t[0] - Sair do Programa                    
 """)
     
 def cadastrar_receita():
     nome_receita = input("\nDigite o nome da receita que deseja cadastrar: ").capitalize()
+    
+    try:
+        with open("receitas.txt", "r") as file:
+            receitas_existentes = file.read()
+
+        if nome_receita in receitas_existentes:
+            print(f"A receita '{nome_receita}' já está cadastrada. Não é possível adicionar novamente.")
+            return
+        
+    except FileNotFoundError:
+        print("\n\t\t\t!!! AVISO !!!\n\nArquivo 'receitas.txt' não existe. Um novo arquivo será criado.\n")
+
     pais = input(f"Insira o país da receita {nome_receita}: ").capitalize()
     ingredientes = input(f"Insira os ingredientes usados em {nome_receita}: ").capitalize()
     preparo = input(f"Explique o método de preparo: ").capitalize()
@@ -30,7 +40,8 @@ def cadastrar_receita():
         "nome": nome_receita,
         "pais": pais,
         "ingredientes": ingredientes,
-        "preparo": preparo
+        "preparo": preparo,
+        "avaliacao": "Sem Avaliação"
     }
 
     with open("receitas.txt", "a") as file:
@@ -93,8 +104,8 @@ def main():
             # atualizar_receita()
             print("deve atualizar receita x")
         elif opcao == '4':
-            # apagar_receita()
-            print("deve apagar receita x")
+            apagar_receita()
+            # print("deve apagar receita x")
         elif opcao == '5':
             # procurar_receita_por_pais()
             print("deve exibir receita x do pais y")
@@ -112,6 +123,5 @@ def main():
             break
         else:
             print('Opção inválida. Tente novamente.')
-
 
 main()
