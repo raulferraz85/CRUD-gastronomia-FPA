@@ -1,8 +1,7 @@
-# CRUD Culinário 🍲
-
-<img style="margin-top: 35px;" src="https://www.cesar.school/wp-content/uploads/2019/09/marca_cesar_school.png" alt="Logo Cesar" width=150 height=150 align="right">
-
+# BiteMe 🍲
 ## Sobre o Projeto
+
+<img src="https://www.cesar.school/wp-content/uploads/2019/09/marca_cesar_school.png" alt="Logo Cesar" width=120 height=120 align="right">
 
 <p style="width: 700px;">Este projeto de fundamentos de programação tem como objetivo a criação de um sistema de gerenciamento de receitas culinárias. O sistema opera através do terminal do VSCode, executando um programa em Python que realiza a manipulação de um arquivo `.txt`.</p>
 
@@ -25,4 +24,3 @@
 - [@Vinícius Ventura](https://www.github.com/vinivent)
 
 ---
-
