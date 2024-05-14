@@ -37,11 +37,11 @@ def cadastrar_receita():
     preparo = input(f"Explique o método de preparo: ").capitalize()
 
     receita = {
-        "nome": nome_receita,
-        "pais": pais,
-        "ingredientes": ingredientes,
-        "preparo": preparo,
-        "avaliacao": "Sem Avaliação"
+        "Nome": nome_receita,
+        "País": pais,
+        "Ingredientes": ingredientes,
+        "Preparo": preparo,
+        "Avaliação": "Sem Avaliação"
     }
 
     with open("receitas.txt", "a") as file:
@@ -59,7 +59,7 @@ def visualizar_receitas():
             numero_receita = 1
 
             for linha in receitas:
-                if linha.startswith("nome:"):
+                if linha.startswith("Nome:"):
                     print(f"\n== RECEITA {numero_receita}: ==\n")
                     numero_receita += 1
                 print(linha, end='')
@@ -74,7 +74,17 @@ def visualizar_receitas():
 
 
 def atualizar_receita():
-    pass
+    nome_receita = input("\nDigite o nome da receita que deseja atualizar: ").capitalize()
+    
+    try:
+        with open("receitas.txt", "r") as file:
+            receitas_existentes = file.read()
+
+        if nome_receita not in receitas_existentes:
+            print(f"\nA receita '{nome_receita}' não está cadastrada. Cadastre-a antes de atualizar.")
+            return
+    except Exception as e:
+        print(f"Ocorreu um erro ao tentar ler o arquivo: {e}")
 
 def apagar_receita():
     pass
@@ -101,8 +111,7 @@ def main():
         elif opcao == '2':
             visualizar_receitas()
         elif opcao == '3':
-            # atualizar_receita()
-            print("deve atualizar receita x")
+            atualizar_receita()
         elif opcao == '4':
             apagar_receita()
             # print("deve apagar receita x")
