@@ -1,5 +1,3 @@
-
-
 def menu():
     print(f"""
  \t\t ____  _ _       __  __              
@@ -82,9 +80,9 @@ def visualizar_receitas():
                 print("\nNão há receitas cadastradas no sistema.")
             
     except FileNotFoundError:
-        print("O arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
+        print("\nO arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
     except Exception as e:
-        print(f"Ocorreu um erro ao tentar ler o arquivo: {e}")
+        print(f"\nOcorreu um erro ao tentar ler o arquivo: {e}")
 
 
 def atualizar_receita():
@@ -109,9 +107,9 @@ def atualizar_receita():
             return
 
     except FileNotFoundError:
-        print("O arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
+        print("\nO arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
     except Exception as e:
-        print(f"Ocorreu um erro ao tentar ler o arquivo: {e}")
+        print(f"\nOcorreu um erro ao tentar ler o arquivo: {e}")
 
 def apagar_receita():
     try:
@@ -138,9 +136,9 @@ def apagar_receita():
             print("\nA receita não foi encontrada.")
 
     except FileNotFoundError:
-        print("O arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
+        print("\nO arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
     except Exception as e:
-        print(f"Ocorreu um erro ao tentar ler o arquivo: {e}")
+        print(f"\nOcorreu um erro ao tentar ler o arquivo: {e}")
 
 
 def procurar_receita_por_pais():
@@ -216,9 +214,9 @@ def ver_receitas_favoritas():
             print("\nVocê não tem receitas marcadas como favoritas.")
 
     except FileNotFoundError:
-        print("O arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
+        print("\nO arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
     except Exception as e:
-        print(f"Ocorreu um erro ao tentar ler o arquivo: {e}")
+        print(f"\nOcorreu um erro ao tentar ler o arquivo: {e}")
 
 
 def avaliar_receita():
@@ -243,9 +241,9 @@ def ver_receita_aleatoria():
                 print("Não há receitas cadastradas.")
 
     except FileNotFoundError:
-        print("O arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
+        print("\nO arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
     except Exception as e:
-        print(f"Ocorreu um erro ao tentar ler o arquivo: {e}")
+        print(f"\nOcorreu um erro ao tentar ler o arquivo: {e}")
 
 
 def main():
