@@ -1,5 +1,3 @@
-receita = {}
-
 def menu():
     print(f"""
  \t\t ____  _ _       __  __              
@@ -18,11 +16,20 @@ def menu():
 \t\t\t[0] - Sair do Programa                    
 """)
     
+def formatar_texto(texto):
+    palavras = texto.split()
+    texto_formatado = ''
+
+    for i in range(0, len(palavras), 10):
+        texto_formatado += ' '.join(palavras[i:i+10]) + '\n'
+    
+    return texto_formatado
+
 def cadastrar_receita():
     nome_receita = input("\nDigite o nome da receita que deseja cadastrar: ").capitalize()
     
     try:
-        with open("receitas.txt", "r") as file:
+        with open("receitas.txt", "r", encoding="utf-8") as file:
             receitas_existentes = file.read()
 
         if nome_receita in receitas_existentes:
@@ -35,31 +42,36 @@ def cadastrar_receita():
     pais = input(f"Insira o país da receita {nome_receita}: ").capitalize()
     ingredientes = input(f"Insira os ingredientes usados em {nome_receita}: ").capitalize()
     preparo = input(f"Explique o método de preparo: ").capitalize()
+    preparo_formatado = formatar_texto(preparo)  
+    favorita = input(f"A receita {nome_receita} é uma das suas favoritas? ").capitalize()
+    while True:
+        if favorita not in {"Não","Sim"}:
+            print("\nParece Que Você Inseriu um Valor Inválido\nVocê só pode inserir os valores [Não] ou [Sim]")
+            favorita = input(f"A receita {nome_receita} é uma das suas favoritas? ")
+        else:
+            break
 
-    receita = {
-        "Nome": nome_receita,
-        "País": pais,
-        "Ingredientes": ingredientes,
-        "Preparo": preparo,
-        "Avaliação": "Sem Avaliação"
-    }
-
-    with open("receitas.txt", "a") as file:
-        for key,value in receita.items():
-            file.write(f"{key}: {value}\n")
-        file.write("\n")
+    with open("receitas.txt", "a", encoding="utf-8") as file:
+        file.write("===================================\n")
+        file.write(f"Nome Receita: {nome_receita}\n")
+        file.write(f"País Receita: {pais}\n")
+        file.write(f"Ingredientes: {ingredientes}\n")
+        file.write(f"Método de Preparo:\n - {preparo_formatado}\n")
+        file.write(f"Avaliação: Sem Avaliação\n")
+        file.write(f"Favorita: {favorita}\n")
+        file.write("\n===================================\n")
 
     print(f"\nA receita '{nome_receita}' foi cadastrada com sucesso!")
     
 
 def visualizar_receitas():
     try:
-        with open("receitas.txt", "r") as file:
+        with open("receitas.txt", "r", encoding="utf-8") as file:
             receitas = file.readlines()
             numero_receita = 1
 
             for linha in receitas:
-                if linha.startswith("Nome:"):
+                if linha.startswith("Nome Receita:"):
                     print(f"\n== RECEITA {numero_receita}: ==\n")
                     numero_receita += 1
                 print(linha, end='')
@@ -72,17 +84,29 @@ def visualizar_receitas():
         print(f"Ocorreu um erro ao tentar ler o arquivo: {e}")
 
 
-
 def atualizar_receita():
-    nome_receita = input("\nDigite o nome da receita que deseja atualizar: ").capitalize()
-    
     try:
-        with open("receitas.txt", "r") as file:
-            receitas_existentes = file.read()
+        with open("receitas.txt", "r", encoding="utf-8") as file:
+            linhas = file.readlines()
+            if len(linhas) == 0:
+                print("Não há receitas cadastradas.") 
+                return
+        print("\n== RECEITAS CADASTRADAS ==\n")
+        for linha in linhas:
+            if linha.startswith("Nome Receita:"):
+                print(linha.strip())
 
-        if nome_receita not in receitas_existentes:
-            print(f"\nA receita '{nome_receita}' não está cadastrada. Cadastre-a antes de atualizar.")
+        receita_a_ser_atualizada = input("\nInsira o nome da receita que deseja atualizar: ").capitalize()
+
+        if any(receita_a_ser_atualizada in linha for linha in linhas):
+            print(f"\nA receita '{receita_a_ser_atualizada}' foi encontrada e pode ser atualizada.")
+            
+        else:
+            print("\nA receita não foi encontrada.")
             return
+
+    except FileNotFoundError:
+        print("O arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
     except Exception as e:
         print(f"Ocorreu um erro ao tentar ler o arquivo: {e}")
 
@@ -114,19 +138,14 @@ def main():
             atualizar_receita()
         elif opcao == '4':
             apagar_receita()
-            # print("deve apagar receita x")
         elif opcao == '5':
-            # procurar_receita_por_pais()
-            print("deve exibir receita x do pais y")
+            procurar_receita_por_pais()
         elif opcao == '6':
-            # ver_receitas_favoritas()
-            print("deve mostrar lista de receitas favoritas")
+            ver_receitas_favoritas()
         elif opcao == '7':
-            # avaliar_receita()
-            print("deve avaliar receita x")
+            avaliar_receita()
         elif opcao == '8':
-            # ver_receita_aleatoria()
-            print("deve exibir receita aleatoria")
+            ver_receita_aleatoria()
         elif opcao == '0':
             print('Encerrando o programa. Até mais!')
             break
