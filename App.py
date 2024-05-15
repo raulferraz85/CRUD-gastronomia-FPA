@@ -232,11 +232,12 @@ def obter_indice_aleatorio(receitas, entrada_usuario):
 def ver_receita_aleatoria():
     try:
         with open("receitas.txt", "r", encoding="utf-8") as file:
-            receitas = file.read().split("\n===================================\n")
+            receitas = file.read().split("===================================\n")
 
             if receitas:
-                entrada_usuario = input("Digite algo rapidamente para gerar uma receita aleatória: ")
+                entrada_usuario = input("\nDigite algo rapidamente para gerar uma receita aleatória: ")
                 indice_aleatorio = obter_indice_aleatorio(receitas, entrada_usuario)
+                print("")
                 print(receitas[indice_aleatorio])
             else:
                 print("Não há receitas cadastradas.")
