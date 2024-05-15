@@ -1,3 +1,5 @@
+
+
 def menu():
     print(f"""
  \t\t ____  _ _       __  __              
@@ -122,8 +124,27 @@ def ver_receitas_favoritas():
 def avaliar_receita():
     pass
 
+def obter_indice_aleatorio(receitas, entrada_usuario):
+    soma_caracteres = sum(len(palavra) for palavra in entrada_usuario.split())
+    indice_aleatorio = soma_caracteres % len(receitas)
+    return indice_aleatorio
+
 def ver_receita_aleatoria():
-    pass
+    try:
+        with open("receitas.txt", "r", encoding="utf-8") as file:
+            receitas = file.read().split("\n===================================\n")
+
+            if receitas:
+                entrada_usuario = input("Digite algo rapidamente para gerar uma receita aleatória: ")
+                indice_aleatorio = obter_indice_aleatorio(receitas, entrada_usuario)
+                print(receitas[indice_aleatorio])
+            else:
+                print("Não há receitas cadastradas.")
+
+    except FileNotFoundError:
+        print("O arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
+    except Exception as e:
+        print(f"Ocorreu um erro ao tentar ler o arquivo: {e}")
 
 
 def main():
