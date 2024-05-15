@@ -185,7 +185,41 @@ def procurar_receita_por_pais():
 
 
 def ver_receitas_favoritas():
-    pass
+    try:
+        with open("receitas.txt", "r", encoding="utf-8") as file:
+            receitas = file.readlines()
+            if len(receitas) == 0:
+                print("Não há receitas cadastradas.") 
+                return
+
+        receitas_favoritas = []
+
+        for i in range(len(receitas)):
+            if receitas[i].startswith("Favorita:"):
+                favorita = receitas[i].split(":")[1].strip()
+                if favorita.lower() == "sim":
+                    receita_atual = {}
+                    j = i - 5  # Começa a coletar os dados 5 linhas acima
+                    while j < i:
+                        chave, valor = receitas[j].split(":", 1)
+                        receita_atual[chave.strip()] = valor.strip()
+                        j += 1
+                    receitas_favoritas.append(receita_atual)
+
+        if receitas_favoritas:
+            print("\n== RECEITAS FAVORITAS ==\n")
+            for receita in receitas_favoritas:
+                for chave, valor in receita.items():
+                    print(f"{chave}: {valor}")
+                print()
+        else:
+            print("\nVocê não tem receitas marcadas como favoritas.")
+
+    except FileNotFoundError:
+        print("O arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
+    except Exception as e:
+        print(f"Ocorreu um erro ao tentar ler o arquivo: {e}")
+
 
 def avaliar_receita():
     pass
