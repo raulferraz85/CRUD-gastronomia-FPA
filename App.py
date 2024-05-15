@@ -29,14 +29,16 @@ def formatar_texto(texto):
 
 def cadastrar_receita():
     nome_receita = input("\nDigite o nome da receita que deseja cadastrar: ").capitalize()
+    padrao = f"Nome Receita: {nome_receita}\n"
     
     try:
         with open("receitas.txt", "r", encoding="utf-8") as file:
-            receitas_existentes = file.read()
+            receitas_existentes = file.readlines()
 
-        if nome_receita in receitas_existentes:
-            print(f"A receita '{nome_receita}' já está cadastrada. Não é possível adicionar novamente.")
-            return
+        for linha in receitas_existentes:
+            if padrao in linha:
+                print(f"A receita '{nome_receita}' já está cadastrada. Não é possível adicionar novamente.")
+                return
         
     except FileNotFoundError:
         print("\n\t\t\t!!! AVISO !!!\n\nArquivo 'receitas.txt' não existe. Um novo arquivo será criado.\n")
@@ -61,11 +63,10 @@ def cadastrar_receita():
         file.write(f"Método de Preparo:\n - {preparo_formatado}\n")
         file.write(f"Avaliação: Sem Avaliação\n")
         file.write(f"Favorita: {favorita}\n")
-        file.write("\n===================================\n")
+        file.write("\n")
 
     print(f"\nA receita '{nome_receita}' foi cadastrada com sucesso!")
     
-
 def visualizar_receitas():
     try:
         with open("receitas.txt", "r", encoding="utf-8") as file:
