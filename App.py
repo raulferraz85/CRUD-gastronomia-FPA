@@ -51,7 +51,7 @@ def cadastrar_receita():
     while True:
         if favorita not in {"Não","Sim"}:
             print("\nParece Que Você Inseriu um Valor Inválido\nVocê só pode inserir os valores [Não] ou [Sim]")
-            favorita = input(f"A receita {nome_receita} é uma das suas favoritas? ")
+            favorita = input(f"A receita {nome_receita} é uma das suas favoritas? ").capitalize()
         else:
             break
 
