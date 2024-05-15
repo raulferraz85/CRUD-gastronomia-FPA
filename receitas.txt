@@ -1,5 +1,4 @@
 ===================================
-Nome Receita: Arroz
 País Receita: Brasil
 Ingredientes: Arroz
 Método de Preparo:

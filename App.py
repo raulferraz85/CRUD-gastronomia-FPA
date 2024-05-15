@@ -114,7 +114,34 @@ def atualizar_receita():
         print(f"Ocorreu um erro ao tentar ler o arquivo: {e}")
 
 def apagar_receita():
-    pass
+    try:
+        with open("receitas.txt", "r", encoding="utf-8") as file:
+            receitas = file.readlines()
+            if len(receitas) == 0:
+                print("Não há receitas cadastradas.") 
+                return
+
+        print("\n== RECEITAS CADASTRADAS ==\n")
+        for linha in receitas:
+            if linha.startswith("Nome Receita:"):
+                print(linha.strip())
+
+        receita_a_ser_apagada = input("\nInsira o nome da receita que deseja apagar: ").capitalize()
+
+        if any(receita_a_ser_apagada in linha for linha in receitas):
+            with open("receitas.txt", "w", encoding="utf-8") as file:
+                for linha in receitas:
+                    if not linha.startswith(f"Nome Receita: {receita_a_ser_apagada}"):
+                        file.write(linha)
+                print(f"\nA receita '{receita_a_ser_apagada}' foi apagada com sucesso.")
+        else:
+            print("\nA receita não foi encontrada.")
+
+    except FileNotFoundError:
+        print("O arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
+    except Exception as e:
+        print(f"Ocorreu um erro ao tentar ler o arquivo: {e}")
+
 
 def procurar_receita_por_pais():
     pass
