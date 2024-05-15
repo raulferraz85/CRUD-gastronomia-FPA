@@ -144,7 +144,45 @@ def apagar_receita():
 
 
 def procurar_receita_por_pais():
-    pass
+    try:
+        with open("receitas.txt", "r", encoding="utf-8") as file:
+            receitas = file.readlines()
+            if len(receitas) == 0:
+                print("Não há receitas cadastradas.") 
+                return
+
+        pais_desejado = input("\nInsira o país para procurar receitas: ").capitalize()
+        receitas_encontradas = []
+        receita_atual = {}
+
+        for linha in receitas:
+            if linha.startswith("País Receita:"):
+                pais = linha.split(":")[1].strip()
+                if pais == pais_desejado:
+                    if receita_atual:
+                        receitas_encontradas.append(receita_atual)
+                    receita_atual = {}
+            if receita_atual and not linha.startswith("===="):
+                chave, valor = linha.split(":", 1)
+                receita_atual[chave.strip()] = valor.strip()
+
+        if receita_atual:
+            receitas_encontradas.append(receita_atual)
+
+        if receitas_encontradas:
+            print(f"\n== RECEITAS DE {pais_desejado.upper()} ==\n")
+            for receita in receitas_encontradas:
+                for chave, valor in receita.items():
+                    print(f"{chave}: {valor}")
+                print()
+        else:
+            print(f"\nNão foram encontradas receitas do país '{pais_desejado}'.")
+
+    except FileNotFoundError:
+        print("O arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
+    except Exception as e:
+        print(f"Ocorreu um erro ao tentar ler o arquivo: {e}")
+
 
 def ver_receitas_favoritas():
     pass
