@@ -21,7 +21,9 @@ def formatar_texto(texto):
     texto_formatado = ''
 
     for i in range(0, len(palavras), 10):
-        texto_formatado += ' '.join(palavras[i:i+10]) + '\n'
+        texto_formatado += ' '.join(palavras[i:i+10])
+        if i + 10 < len(palavras):
+            texto_formatado += '\n'
     
     return texto_formatado
 
@@ -88,23 +90,63 @@ def visualizar_receitas():
 def atualizar_receita():
     try:
         with open("receitas.txt", "r", encoding="utf-8") as file:
-            linhas = file.readlines()
-            if len(linhas) == 0:
-                print("Não há receitas cadastradas.") 
-                return
-        print("\n== RECEITAS CADASTRADAS ==\n")
-        for linha in linhas:
-            if linha.startswith("Nome Receita:"):
-                print(linha.strip())
+            receitas = file.readlines()
 
-        receita_a_ser_atualizada = input("\nInsira o nome da receita que deseja atualizar: ").capitalize()
-
-        if any(receita_a_ser_atualizada in linha for linha in linhas):
-            print(f"\nA receita '{receita_a_ser_atualizada}' foi encontrada e pode ser atualizada.")
-            
-        else:
-            print("\nA receita não foi encontrada.")
+        if not receitas:
+            print("Não há receitas cadastradas.")
             return
+
+        print("\n== RECEITAS CADASTRADAS ==\n")
+        nome_receitas = []
+        for i, linha in enumerate(receitas):
+            if linha.startswith("Nome Receita:"):
+                nome_receita = linha.split(":")[1].strip()
+                nome_receitas.append(nome_receita)
+                print(f"{nome_receita}")
+
+        nome_receita_a_ser_atualizada = input("\nInsira o nome da receita que deseja atualizar: ").capitalize()
+        if nome_receita_a_ser_atualizada not in nome_receitas:
+            print("\nNome de receita inválido.")
+            return
+
+        inicio_receita = None
+        fim_receita = None
+
+        # Encontrar o início e o fim da receita no arquivo
+        for i, linha in enumerate(receitas):
+            if linha.startswith("Nome Receita:") and linha.split(":")[1].strip() == nome_receita_a_ser_atualizada:
+                inicio_receita = i
+            elif inicio_receita is not None and linha.startswith("Favorita:"):
+                fim_receita = i + 1
+                break
+
+        if inicio_receita is not None and fim_receita is not None:
+            pais = input(f"Insira o país da receita {nome_receita_a_ser_atualizada}: ").capitalize()
+            ingredientes = input(f"Insira os ingredientes usados em {nome_receita_a_ser_atualizada}: ").capitalize()
+            preparo = input(f"Explique o método de preparo: ").capitalize()
+            favorita = input(f"A receita {nome_receita_a_ser_atualizada} é uma das suas favoritas? ").capitalize()
+            while favorita not in {"Não", "Sim"}:
+                print("\nParece que você inseriu um valor inválido. Você só pode inserir os valores [Não] ou [Sim].")
+                favorita = input(f"A receita {nome_receita_a_ser_atualizada} é uma das suas favoritas? ").capitalize()
+
+            nova_receita = f"Nome Receita: {nome_receita_a_ser_atualizada}\n"
+            nova_receita += f"País Receita: {pais}\n"
+            nova_receita += f"Ingredientes: {ingredientes}\n"
+            nova_receita += f"Método de Preparo:\n - {formatar_texto(preparo)}\n"
+            nova_receita += "Avaliação: Sem Avaliação\n"
+            nova_receita += f"Favorita: {favorita}\n"
+
+            # Escrever a nova receita separadamente
+            with open("receitas.txt", "w", encoding="utf-8") as file:
+                for line in receitas[:inicio_receita]:
+                    file.write(line)
+                file.write(nova_receita)
+                for line in receitas[fim_receita:]:
+                    file.write(line)
+
+            print(f"\nA receita '{nome_receita_a_ser_atualizada}' foi atualizada com sucesso.")
+        else:
+            print("\nNão foi possível encontrar a receita para atualizar.")
 
     except FileNotFoundError:
         print("\nO arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
@@ -115,25 +157,45 @@ def apagar_receita():
     try:
         with open("receitas.txt", "r", encoding="utf-8") as file:
             receitas = file.readlines()
-            if len(receitas) == 0:
-                print("Não há receitas cadastradas.") 
-                return
+        
+        if not receitas:
+            print("Não há receitas cadastradas.")
+            return
 
         print("\n== RECEITAS CADASTRADAS ==\n")
-        for linha in receitas:
+        nome_receitas = []
+        for i, linha in enumerate(receitas):
             if linha.startswith("Nome Receita:"):
-                print(linha.strip())
+                nome_receita = linha.split(":")[1].strip()
+                nome_receitas.append(nome_receita)
+                print(f"{nome_receita}")
 
-        receita_a_ser_apagada = input("\nInsira o nome da receita que deseja apagar: ").capitalize()
+        nome_receita_a_ser_apagada = input("\nInsira o nome da receita que deseja apagar: ").capitalize()
+        if nome_receita_a_ser_apagada not in nome_receitas:
+            print("\nNome de receita inválido.")
+            return
 
-        if any(receita_a_ser_apagada in linha for linha in receitas):
+        inicio_receita = None
+        fim_receita = None
+
+        # Encontrar o início e o fim da receita no arquivo
+        for i, linha in enumerate(receitas):
+            if linha.startswith("Nome Receita:") and linha.split(":")[1].strip() == nome_receita_a_ser_apagada:
+                inicio_receita = i
+            elif inicio_receita is not None and linha.startswith("Favorita:"):
+                fim_receita = i + 1
+                break
+
+        if inicio_receita is not None and fim_receita is not None:
+            del receitas[inicio_receita:fim_receita]
+
             with open("receitas.txt", "w", encoding="utf-8") as file:
                 for linha in receitas:
-                    if not linha.startswith(f"Nome Receita: {receita_a_ser_apagada}"):
-                        file.write(linha)
-                print(f"\nA receita '{receita_a_ser_apagada}' foi apagada com sucesso.")
+                    file.write(linha)
+
+            print(f"\nA receita '{nome_receita_a_ser_apagada}' foi apagada com sucesso.")
         else:
-            print("\nA receita não foi encontrada.")
+            print("\nNão foi possível encontrar a receita para apagar.")
 
     except FileNotFoundError:
         print("\nO arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
@@ -141,37 +203,26 @@ def apagar_receita():
         print(f"\nOcorreu um erro ao tentar ler o arquivo: {e}")
 
 
+
+
+
 def procurar_receita_por_pais():
     try:
         with open("receitas.txt", "r", encoding="utf-8") as file:
-            receitas = file.readlines()
-            if len(receitas) == 0:
-                print("Não há receitas cadastradas.") 
-                return
+            receitas = file.read()
+
+        if "Nome Receita:" not in receitas:
+            print("Não há receitas cadastradas.")
+            return
 
         pais_desejado = input("\nInsira o país para procurar receitas: ").capitalize()
-        receitas_encontradas = []
-        receita_atual = {}
-
-        for linha in receitas:
-            if linha.startswith("País Receita:"):
-                pais = linha.split(":")[1].strip()
-                if pais == pais_desejado:
-                    if receita_atual:
-                        receitas_encontradas.append(receita_atual)
-                    receita_atual = {}
-            if receita_atual and not linha.startswith("===="):
-                chave, valor = linha.split(":", 1)
-                receita_atual[chave.strip()] = valor.strip()
-
-        if receita_atual:
-            receitas_encontradas.append(receita_atual)
+        receitas_list = receitas.split("===================================\n")
+        receitas_encontradas = [receita for receita in receitas_list if f"País Receita: {pais_desejado}" in receita]
 
         if receitas_encontradas:
             print(f"\n== RECEITAS DE {pais_desejado.upper()} ==\n")
             for receita in receitas_encontradas:
-                for chave, valor in receita.items():
-                    print(f"{chave}: {valor}")
+                print(receita.strip())
                 print()
         else:
             print(f"\nNão foram encontradas receitas do país '{pais_desejado}'.")
@@ -185,30 +236,19 @@ def procurar_receita_por_pais():
 def ver_receitas_favoritas():
     try:
         with open("receitas.txt", "r", encoding="utf-8") as file:
-            receitas = file.readlines()
-            if len(receitas) == 0:
-                print("Não há receitas cadastradas.") 
-                return
+            receitas = file.read()
 
-        receitas_favoritas = []
+        if "Nome Receita:" not in receitas:
+            print("Não há receitas cadastradas.")
+            return
 
-        for i in range(len(receitas)):
-            if receitas[i].startswith("Favorita:"):
-                favorita = receitas[i].split(":")[1].strip()
-                if favorita.lower() == "sim":
-                    receita_atual = {}
-                    j = i - 5  # Começa a coletar os dados 5 linhas acima
-                    while j < i:
-                        chave, valor = receitas[j].split(":", 1)
-                        receita_atual[chave.strip()] = valor.strip()
-                        j += 1
-                    receitas_favoritas.append(receita_atual)
+        receitas_list = receitas.split("===================================\n")
+        favoritas = [receita for receita in receitas_list if "Favorita: Sim" in receita]
 
-        if receitas_favoritas:
+        if favoritas:
             print("\n== RECEITAS FAVORITAS ==\n")
-            for receita in receitas_favoritas:
-                for chave, valor in receita.items():
-                    print(f"{chave}: {valor}")
+            for receita in favoritas:
+                print(receita.strip())
                 print()
         else:
             print("\nVocê não tem receitas marcadas como favoritas.")
@@ -219,8 +259,57 @@ def ver_receitas_favoritas():
         print(f"\nOcorreu um erro ao tentar ler o arquivo: {e}")
 
 
+
 def avaliar_receita():
-    pass
+    try:
+        with open("receitas.txt", "r", encoding="utf-8") as file:
+            receitas = file.read()
+
+        if "Nome Receita:" not in receitas:
+            print("Não há receitas cadastradas.")
+            return
+
+        print("\n== RECEITAS CADASTRADAS ==\n")
+        receitas_list = receitas.split("===================================\n")
+        for receita in receitas_list:
+            if receita.strip():
+                print(receita.split("\n")[0].strip())
+
+        nome_receita = input("\nInsira o nome da receita que deseja avaliar: ").capitalize()
+        nova_lista_receitas = []
+        receita_encontrada = False
+
+        for receita in receitas_list:
+            if f"Nome Receita: {nome_receita}" in receita:
+                receita_encontrada = True
+                avaliacao = input("Forneça sua avaliação para esta receita (de 1 a 5 estrelas): ")
+                while True:
+                    if avaliacao.isdigit() and 1 <= int(avaliacao) <= 5:
+                        break
+                    else:
+                        avaliacao = input("Por favor, insira uma avaliação válida (de 1 a 5 estrelas): ")
+
+                nova_receita = receita.replace("Avaliação: Sem Avaliação", f"Avaliação: {avaliacao} estrela(s)")
+                nova_lista_receitas.append(nova_receita.strip())
+            else:
+                nova_lista_receitas.append(receita.strip())
+
+        if receita_encontrada:
+            with open("receitas.txt", "w", encoding="utf-8") as file:
+                for receita in nova_lista_receitas:
+                    if receita.strip():
+                        file.write("===================================\n")
+                        file.write(receita.strip() + "\n")
+
+            print(f"\nA receita '{nome_receita}' foi avaliada com sucesso.")
+        else:
+            print("\nA receita não foi encontrada.")
+
+    except FileNotFoundError:
+        print("\nO arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
+    except Exception as e:
+        print(f"\nOcorreu um erro ao tentar ler o arquivo: {e}")
+
 
 def obter_indice_aleatorio(receitas, entrada_usuario):
     soma_caracteres = sum(len(palavra) for palavra in entrada_usuario.split())
