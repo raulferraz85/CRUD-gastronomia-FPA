@@ -159,12 +159,12 @@ def apagar_receita():
         return
 
     nome_receita_a_ser_deletada = input("\nDigite o nome da receita que deseja deletar: ").strip().lower()
-        
+    padrao = f"Nome Receita: {nome_receita_a_ser_deletada}\n"
     receita_encontrada = False
     receitas_atualizadas = []
 
     for receita in receitas:
-        if nome_receita_a_ser_deletada not in receita.strip().lower():
+        if padrao.lower() not in receita.lower():
             receitas_atualizadas.append(receita.strip())
         else:
             receita_encontrada = True
@@ -322,8 +322,6 @@ def main():
             print("")
             atualizar_receita()
         elif opcao == '4':
-            listar_receitas()
-            print("")
             apagar_receita()
         elif opcao == '5':
             procurar_receita_por_pais()
