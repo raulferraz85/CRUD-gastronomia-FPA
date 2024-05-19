@@ -1,0 +1,29 @@
+
+===================================
+
+===================================
+
+===================================
+
+===================================
+
+===================================
+
+===================================
+===================================
+Nome Receita: Aaa
+País Receita: Bbb
+Ingredientes: Ccc
+Método de Preparo:
+ - Ddd
+Avaliação: Sem Avaliação
+Favorita: Sim
+
+===================================
+Nome Receita: Bbb
+País Receita: Aaa
+Ingredientes: Aaa
+Método de Preparo:
+ - Aaa
+Avaliação: Sem Avaliação
+Favorita: Não

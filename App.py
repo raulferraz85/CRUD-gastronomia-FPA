@@ -108,8 +108,12 @@ def atualizar_receita():
         if not receita_encontrada:
             print(f"\nReceita '{receita_a_ser_alterada}' não encontrada.")
             return
-
         nome_receita = input("Insira o novo nome da receita: ").capitalize()
+        # Verificar se o novo nome já existe
+        for linha in receitas:
+            if linha.startswith("Nome Receita:") and nome_receita in linha:
+                print(f"\nJá existe uma receita com o nome '{nome_receita}'. Por favor, escolha outro nome.")
+                return
         pais_receita = input("Insira o novo país da receita: ").capitalize()
         ingredientes_receita = input("Insira os novos ingredientes da receita: ").capitalize()
         preparo = input(f"Explique o método de preparo: ").capitalize()
@@ -137,6 +141,7 @@ def atualizar_receita():
         print("\nO arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
     except Exception as e:
         print(f"\nOcorreu um erro ao tentar atualizar a receita: {e}")
+
 
     
 def apagar_receita():
@@ -175,8 +180,8 @@ def apagar_receita():
 
     try:
         with open("receitas.txt", "w", encoding="utf-8") as file:
-            for receita in receitas_atualizadas:
-                file.write(receita.strip() + "\n===================================\n")
+             for receita in receitas_atualizadas:
+                 file.write(receita.strip() + "\n===================================\n")
 
         print("\nReceita deletada com sucesso!")
         
