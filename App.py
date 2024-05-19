@@ -140,39 +140,48 @@ def atualizar_receita():
 
     
 def apagar_receita():
-    nome_receita_a_ser_deletada = input("Digite o nome da receita que deseja deletar: ").capitalize()
     try:
         with open("receitas.txt", "r", encoding="utf-8") as file:
             receitas = file.read().split("===================================")
-        
-        receita_encontrada = False
-        receitas_atualizadas = []
-
-        for receita in receitas:
-            if nome_receita_a_ser_deletada not in receita.lower():
-                receitas_atualizadas.append(receita)
-            else:
-                receita_encontrada = True
-
-        if not receita_encontrada:
-            print("\nReceita não encontrada.")
+        if len(receitas) == 1:
+            print("\nNão há receitas cadastradas.")
             return
+        else:
+            print("\nReceita(s) Cadastrada(s) antes de deletar:")
+            for receita in receitas:
+                print(receita.strip())
+            
+    except FileNotFoundError:
+        print("O arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
+        return
+    except Exception as e:
+        print(f"Ocorreu um erro ao tentar ler as receitas: {e}")
+        return
 
-        print("\nReceita(s) Cadastrada(s) antes de deletar:")
-        for receita in receitas_atualizadas:
-            print(receita.strip())
+    nome_receita_a_ser_deletada = input("\nDigite o nome da receita que deseja deletar: ").strip().lower()
+        
+    receita_encontrada = False
+    receitas_atualizadas = []
 
+    for receita in receitas:
+        if nome_receita_a_ser_deletada not in receita.strip().lower():
+            receitas_atualizadas.append(receita.strip())
+        else:
+            receita_encontrada = True
+
+    if not receita_encontrada:
+        print("\nReceita não encontrada.")
+        return
+
+    try:
         with open("receitas.txt", "w", encoding="utf-8") as file:
             for receita in receitas_atualizadas:
                 file.write(receita.strip() + "\n===================================\n")
 
         print("\nReceita deletada com sucesso!")
         
-
-    except FileNotFoundError:
-        print("O arquivo de receitas não foi encontrado. Por favor, cadastre uma receita primeiro.")
     except Exception as e:
-        print(f"Ocorreu um erro ao tentar deletar a receita: {e}")
+        print(f"Ocorreu um erro ao tentar salvar as receitas: {e}")
 
 def procurar_receita_por_pais():
     try:
