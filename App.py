@@ -21,7 +21,7 @@ def listar_receitas():
         with open("receitas.txt", "r", encoding="utf-8") as file:
             receitas = file.read().strip().split("===================================")
         
-        receitas = [receita for receita in receitas if receita.strip()]  # Remove entradas vazias
+        receitas = [receita for receita in receitas if receita.strip()]
         
         if not receitas:
             print("\nNão há receitas cadastradas.")
@@ -97,10 +97,9 @@ def atualizar_receita():
             linha = receitas[i]
             if linha.startswith("Nome Receita:") and receita_a_ser_alterada in linha:
                 receita_encontrada = True
-                # Ignorar linhas até o próximo separador
                 while i < len(receitas) and receitas[i].strip() != "===================================":
                     i += 1
-                i += 1  # Ignorar o separador também
+                i += 1
             else:
                 aux2.append(linha)
                 i += 1
@@ -109,7 +108,6 @@ def atualizar_receita():
             print(f"\nReceita '{receita_a_ser_alterada}' não encontrada.")
             return
         nome_receita = input("Insira o novo nome da receita: ").capitalize()
-        # Verificar se o novo nome já existe
         for linha in receitas:
             if linha.startswith("Nome Receita:") and nome_receita in linha:
                 print(f"\nJá existe uma receita com o nome '{nome_receita}'. Por favor, escolha outro nome.")
@@ -180,8 +178,10 @@ def apagar_receita():
 
     try:
         with open("receitas.txt", "w", encoding="utf-8") as file:
-             for receita in receitas_atualizadas:
-                 file.write(receita.strip() + "\n===================================\n")
+             for i, receita in enumerate(receitas_atualizadas):
+                if i != 0:
+                    file.write("\n===================================\n")
+                file.write(receita.strip())
 
         print("\nReceita deletada com sucesso!")
         
