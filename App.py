@@ -121,6 +121,7 @@ def atualizar_receita():
             favorita = input(f"A receita {nome_receita} é uma das suas favoritas? ").capitalize()
         
         nova_receita = (
+            f"===================================\n"
             f"Nome Receita: {nome_receita}\n"
             f"País Receita: {pais_receita}\n"
             f"Ingredientes: {ingredientes_receita}\n"
