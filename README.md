@@ -20,7 +20,7 @@
 
 - [@Adrian Michael](https://github.com/adrianMichael5)
 - [@Marco Maciel](https://github.com/oMarcoMaciel)
-- @Raul Ferraz
+- [@Raul Ferraz](https://github.com/raulferraz85)
 - [@Vinícius Ventura](https://www.github.com/vinivent)
 
 ---
