@@ -14,7 +14,7 @@
 - **[5] - Procurar Receita por País:** Busca receitas com base no país de origem.
 - **[6] - Ver Receitas Favoritas:** Mostra uma lista de suas receitas favoritas.
 - **[7] - Avaliar Receita:** Avalie uma receita (Funcionalidade Extra).
-- **[8] - Ver Receita Aleatória:** Exibe uma receita aleatória.
+- **[8] - Ver Receita Aleatória:** Exibe uma receita aleatória
 
 ## Autores
 
